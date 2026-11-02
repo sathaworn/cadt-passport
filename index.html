@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CADT Passport Specimen</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: warning band across the top, then form (left) beside a sticky canvas preview (right); stacks on phones */
+:root{
+  --bg:#f3f5f7; --surface:#ffffff; --fg:#14202b; --muted:#5b6b7a; --line:#d7dee5;
+  --accent:#1d4e7a; --accent-fg:#ffffff; --danger:#b3122e; --danger-bg:#fde8eb; --danger-fg:#7a0c1f;
+  --ok:#1f7a4d;
+  --font-display:"Bai Jamjuree","IBM Plex Sans Thai",system-ui,sans-serif;
+  --font-body:"IBM Plex Sans Thai",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f161d; --surface:#17212b; --fg:#e6edf3; --muted:#9aaab8; --line:#2a3846;
+  --accent:#6fa8dc; --accent-fg:#0b1218; --danger:#ff6b81; --danger-bg:#3a1219; --danger-fg:#ffd5dc; --ok:#5fd39a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f161d; --surface:#17212b; --fg:#e6edf3; --muted:#9aaab8; --line:#2a3846;
+  --accent:#6fa8dc; --accent-fg:#0b1218; --danger:#ff6b81; --danger-bg:#3a1219; --danger-fg:#ffd5dc; --ok:#5fd39a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.5}
+.warn{background:var(--danger);color:#fff;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px}
+.warn-in{max-width:1240px;margin:0 auto;display:flex;gap:16px;align-items:center}
+.warn svg{flex:none;width:44px;height:44px}
+.warn h2{margin:0;font-family:var(--font-display);font-size:clamp(20px,3.2vw,28px);font-weight:700;line-height:1.25;text-wrap:balance}
+.warn p{margin:4px 0 0;font-size:14.5px;opacity:.95;max-width:80ch}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
+.logo{display:block;height:64px;width:auto;margin-bottom:14px;background:#fff;border-radius:8px;padding:6px 10px}
+header.top h1{font-family:var(--font-display);font-size:26px;margin:0;font-weight:700;text-wrap:balance}
+header.top p{margin:4px 0 20px;color:var(--muted);max-width:70ch}
+.grid{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+form{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+legend{font-family:var(--font-display);font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media (max-width:420px){.row3{grid-template-columns:1fr 1fr}}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0}
+label{font-size:13px;font-weight:500;color:var(--fg)}
+label small{color:var(--muted);font-weight:400}
+input,select{font:inherit;font-size:15px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);width:100%;min-width:0}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+input[readonly]{opacity:.8}
+.err{font-size:12.5px;color:var(--danger);min-height:0}
+.err:empty{display:none}
+input.bad{border-color:var(--danger)}
+.hint{font-size:12.5px;color:var(--muted)}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+button{font:inherit;font-weight:600;padding:10px 16px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-fg);cursor:pointer}
+button.ghost{background:transparent;color:var(--accent)}
+.preview{position:sticky;top:16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+@media (max-width:900px){.preview{position:static}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.card h3{margin:0;font-family:var(--font-display);font-size:16px;font-weight:600}
+#pp{width:100%;max-width:100%;height:auto;display:block;border-radius:8px;box-shadow:0 2px 14px rgba(0,0,0,.18)}
+.status{font-size:13.5px;padding:8px 12px;border-radius:6px;background:var(--danger-bg);color:var(--danger-fg)}
+.status.ok{background:transparent;color:var(--ok);padding:0}
+.mrzbox{overflow-x:auto;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+.mrzbox code{font-family:var(--font-mono);font-size:14px;white-space:pre;display:block;line-height:1.6}
+pre.out{margin:0;font-family:var(--font-body);font-size:13.5px;white-space:pre-wrap;word-break:break-word;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:12px;max-height:340px;overflow:auto}
+.cd{font-size:13px;color:var(--muted);display:grid;grid-template-columns:auto 1fr;gap:2px 12px;font-variant-numeric:tabular-nums}
+.cd b{font-family:var(--font-mono);color:var(--fg);font-weight:500}
+</style>
+
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<div class="warn" role="alert">
+  <div class="warn-in">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4 46 43H2Z" fill="#fff"/><path d="M22 17h4l-.6 14h-2.8ZM24 34.5a2.4 2.4 0 1 1 0 4.8 2.4 2.4 0 0 1 0-4.8Z" fill="#b3122e"/></svg>
+    <div>
+      <h2>ห้ามกรอกข้อมูลจริงเด็ดขาด — ใช้ข้อมูลสมมติเท่านั้น</h2>
+      <p>ห้ามใส่ชื่อ เลขบัตรประชาชน เลขหนังสือเดินทาง หรือรูปถ่ายของบุคคลจริง หน้านี้สร้างเอกสารจำลองเพื่อการฝึกอบรมของ CADT เท่านั้น ไม่ใช่เอกสารเดินทาง และห้ามนำไปใช้แสดงตัวตนหรือยื่นต่อหน่วยงานใด</p>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="top">
+    <img class="logo" src="data:image/jpeg;base64,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" alt="DPU CADT" width="520" height="235">
+    <h1>สร้างหน้าหนังสือเดินทางจำลอง (Training Specimen)</h1>
+    <p>กรอกข้อมูลสมมติให้ครบ ระบบจะสร้างหน้าข้อมูลพร้อม MRZ 2 บรรทัด (44 ตัวอักษร) ที่คำนวณ check digit ตามมาตรฐาน ICAO 9303 ข้อมูลทั้งหมดประมวลผลในเบราว์เซอร์นี้เท่านั้น ไม่มีการส่งออกไปที่ใด</p>
+  </header>
+
+  <div class="grid">
+    <form id="frm" novalidate>
+      <fieldset>
+        <legend>หนังสือเดินทาง</legend>
+        <div class="row">
+          <div class="f"><label for="country">ประเทศหนังสือเดินทาง</label><input id="country" placeholder="Thailand"><div class="err" id="e-country"></div></div>
+          <div class="f"><label for="ptype">ประเภทหนังสือเดินทาง</label>
+            <select id="ptype"><option value="P">P · ทั่วไป</option><option value="PO">PO · ราชการ</option><option value="PD">PD · ทูต</option></select></div>
+        </div>
+        <div class="row">
+          <div class="f"><label for="ccode">Country Code <small>(3 ตัวอักษร)</small></label><input id="ccode" placeholder="THA" maxlength="3" autocomplete="off"><div class="err" id="e-ccode"></div></div>
+          <div class="f"><label for="pno">Passport Number</label><input id="pno" placeholder="AB1234567" maxlength="9" autocomplete="off"><div class="err" id="e-pno"></div></div>
+        </div>
+        <div class="hint">Passport Number: ตัวอักษรอังกฤษ 2 ตัว ตามด้วยตัวเลข 7 ตัว เช่น AB1427943</div>
+      </fieldset>
+
+      <fieldset>
+        <legend>ผู้ถือหนังสือเดินทาง (ข้อมูลสมมติ)</legend>
+        <div class="f"><label for="surname">Surname</label><input id="surname" placeholder="Wongwassna" autocomplete="off"><div class="err" id="e-surname"></div></div>
+        <div class="row" style="grid-template-columns:110px 1fr">
+          <div class="f"><label for="title">Title</label><select id="title"><option value="">เลือก</option><option>Mr.</option><option>Mrs.</option><option>Miss</option><option>Ms.</option></select><div class="err" id="e-title"></div></div>
+          <div class="f"><label for="given">Name</label><input id="given" placeholder="Supitchaya" autocomplete="off"><div class="err" id="e-given"></div></div>
+        </div>
+        <div class="f"><label for="thname">คำนำหน้า ชื่อ นามสกุล <small>(ภาษาไทย)</small></label><input id="thname" placeholder="นายสุพิชญา วงศ์วาสนา" autocomplete="off"><div class="err" id="e-thname"></div></div>
+        <div class="row">
+          <div class="f"><label for="nat">Nationality / สัญชาติ</label><input id="nat" placeholder="ไทย"><div class="err" id="e-nat"></div></div>
+          <div class="f"><label for="dob">DOB / วันเกิด</label><input id="dob" type="date"><div class="err" id="e-dob"></div></div>
+        </div>
+        <div class="f"><label for="idno">ID No. / เลขบัตรประจำตัวประชาชน <small>(13 หลัก)</small></label><input id="idno" placeholder="13 หลัก" inputmode="numeric" maxlength="13" autocomplete="off"><div class="err" id="e-idno"></div></div>
+        <div class="row3">
+          <div class="f"><label for="gender">Gender / เพศ</label><select id="gender"><option value="">เลือก</option><option value="M">ชาย</option><option value="F">หญิง</option><option value="X">ไม่ระบุ</option></select><div class="err" id="e-gender"></div></div>
+          <div class="f"><label for="height">ส่วนสูง (ม.)</label><input id="height" placeholder="1.65" inputmode="decimal"><div class="err" id="e-height"></div></div>
+          <div class="f"><label for="birth">จังหวัดที่เกิด</label><input id="birth" placeholder="สงขลา" list="provinces"><div class="err" id="e-birth"></div></div>
+        </div>
+        <div class="f"><label for="photo">รูปถ่าย <small>(ไม่บังคับ · ใช้รูปสมมติ/การ์ตูนเท่านั้น)</small></label><input id="photo" type="file" accept="image/*"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>การออกหนังสือเดินทาง</legend>
+        <div class="row">
+          <div class="f"><label for="issue">Date of Issue / วันที่ออก</label><input id="issue" type="date"><div class="err" id="e-issue"></div></div>
+          <div class="f"><label for="expiry">Date of Expiry / วันหมดอายุ</label><input id="expiry" type="date"><div class="err" id="e-expiry"></div></div>
+        </div>
+        <div class="hint">เปลี่ยนวันที่ออก ระบบจะตั้งวันหมดอายุเป็น 10 ปีลบ 1 วันให้อัตโนมัติ (แก้เองได้)</div>
+        <div class="f"><label for="auth">Issuing Authority</label><input id="auth" value="College of Aviation Development and Training: CADT" readonly></div>
+      </fieldset>
+
+      <div class="btns">
+        <button type="submit">สร้างหน้า Passport</button>
+        <button type="button" class="ghost" id="clear">ล้างข้อมูล</button>
+      </div>
+    </form>
+
+    <section class="preview" id="preview">
+      <div class="card">
+        <h3>หน้าข้อมูลหนังสือเดินทางจำลอง</h3>
+        <div id="status" class="status" hidden></div>
+        <img id="pp" alt="หน้าข้อมูลหนังสือเดินทางจำลอง พร้อมลายน้ำ SPECIMEN">
+        <div class="btns">
+          <button type="button" id="dl" hidden>บันทึกเป็นรูป PNG</button>
+          <span class="hint" id="dlhint">คลิกขวาหรือกดค้างที่รูปเพื่อบันทึกภาพ</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>MRZ (2 บรรทัด × 44 ตัวอักษร)</h3>
+        <div class="mrzbox"><code id="mrz1"></code><code id="mrz2"></code></div>
+        <div class="cd" id="cd"></div>
+      </div>
+      <div class="card">
+        <h3>ข้อมูลตามรูปแบบ</h3>
+        <pre class="out" id="out"></pre>
+        <div class="btns"><button type="button" class="ghost" id="copy">คัดลอกข้อความ</button><span class="hint" id="copied"></span></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<datalist id="provinces"></datalist>
+
+<script>
+const PROV="กรุงเทพมหานคร กระบี่ กาญจนบุรี กาฬสินธุ์ กำแพงเพชร ขอนแก่น จันทบุรี ฉะเชิงเทรา ชลบุรี ชัยนาท ชัยภูมิ ชุมพร เชียงราย เชียงใหม่ ตรัง ตราด ตาก นครนายก นครปฐม นครพนม นครราชสีมา นครศรีธรรมราช นครสวรรค์ นนทบุรี นราธิวาส น่าน บึงกาฬ บุรีรัมย์ ปทุมธานี ประจวบคีรีขันธ์ ปราจีนบุรี ปัตตานี พระนครศรีอยุธยา พะเยา พังงา พัทลุง พิจิตร พิษณุโลก เพชรบุรี เพชรบูรณ์ แพร่ ภูเก็ต มหาสารคาม มุกดาหาร แม่ฮ่องสอน ยโสธร ยะลา ร้อยเอ็ด ระนอง ระยอง ราชบุรี ลพบุรี ลำปาง ลำพูน เลย ศรีสะเกษ สกลนคร สงขลา สตูล สมุทรปราการ สมุทรสงคราม สมุทรสาคร สระแก้ว สระบุรี สิงห์บุรี สุโขทัย สุพรรณบุรี สุราษฎร์ธานี สุรินทร์ หนองคาย หนองบัวลำภู อ่างทอง อำนาจเจริญ อุดรธานี อุตรดิตถ์ อุทัยธานี อุบลราชธานี".split(" ");
+document.getElementById("provinces").innerHTML=PROV.map(p=>`<option value="${p}">`).join("");
+
+const $=id=>document.getElementById(id);
+const TH_M=["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+const EN_M=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const EN_S=EN_M.map(m=>m.slice(0,3).toUpperCase());
+const GENDER_TH={M:"ชาย",F:"หญิง",X:"ไม่ระบุ","":""};
+
+function parseDate(v){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(v||"");return m?{y:+m[1],m:+m[2],d:+m[3]}:null}
+const pad=n=>String(n).padStart(2,"0");
+const fmtEN=p=>p?`${pad(p.d)} ${EN_M[p.m-1]} ${p.y}`:"";
+const fmtENs=p=>p?`${pad(p.d)} ${EN_S[p.m-1]} ${p.y}`:"";
+const fmtTH=p=>p?`${pad(p.d)} ${TH_M[p.m-1]} ${p.y+543}`:"";
+const yymmdd=p=>p?`${pad(p.y%100)}${pad(p.m)}${pad(p.d)}`:"<<<<<<";
+
+// ICAO 9303 check digit: weights 7,3,1; A-Z = 10-35; '<' = 0
+function cd(s){let t=0;const w=[7,3,1];for(let i=0;i<s.length;i++){const c=s[i];let v=0;if(c>="0"&&c<="9")v=+c;else if(c>="A"&&c<="Z")v=c.charCodeAt(0)-55;t+=v*w[i%3]}return String(t%10)}
+const mrzName=s=>(s||"").toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/['.]/g,"").replace(/[^A-Z]+/g,"<").replace(/^<+|<+$/g,"");
+const fill=(s,n)=>(s+"<".repeat(n)).slice(0,n);
+
+function buildMRZ(d){
+  const type=fill(d.ptype,2), cc=fill(d.ccode.toUpperCase(),3);
+  const l1=fill(type+cc+fill(mrzName(d.surname)+"<<"+mrzName(d.given),39),44);
+  const doc=fill(d.pno.toUpperCase(),9), dob=yymmdd(d.dob), exp=yymmdd(d.expiry);
+  const opt=fill(d.idno.replace(/\D/g,""),14);
+  const c1=cd(doc),c2=cd(dob),c3=cd(exp),c4=cd(opt);
+  const comp=cd(doc+c1+dob+c2+exp+c3+opt+c4);
+  const l2=doc+c1+cc+dob+c2+(d.gender||"<").replace("X","<")+exp+c3+opt+c4+comp;
+  return {l1,l2,checks:{doc:c1,dob:c2,exp:c3,opt:c4,comp}};
+}
+
+const ids=["country","ptype","ccode","pno","surname","title","given","thname","nat","dob","idno","gender","height","birth","issue","expiry","auth"];
+function read(){const d={};ids.forEach(k=>d[k]=$(k).value.trim());d.dob=parseDate(d.dob);d.issue=parseDate(d.issue);d.expiry=parseDate(d.expiry);return d}
+
+function validate(d){
+  const e={};
+  if(!d.country)e.country="ระบุประเทศ";
+  if(!d.title)e.title="เลือกคำนำหน้า";
+  if(!d.gender)e.gender="เลือกเพศ";
+  if(!d.nat)e.nat="ระบุสัญชาติ";
+  if(!/^[A-Z]{3}$/i.test(d.ccode))e.ccode="ต้องเป็นตัวอักษรภาษาอังกฤษ 3 ตัว เช่น THA";
+  if(!/^[A-Z]{2}\d{7}$/i.test(d.pno))e.pno="รูปแบบ: อักษรอังกฤษ 2 ตัว + ตัวเลข 7 ตัว เช่น AB1427943";
+  if(!/^[A-Za-z][A-Za-z '\-]*$/.test(d.surname))e.surname="กรอกเป็นภาษาอังกฤษ";
+  if(!/^[A-Za-z][A-Za-z '\-]*$/.test(d.given))e.given="กรอกเป็นภาษาอังกฤษ";
+  if(!/[฀-๿]/.test(d.thname))e.thname="กรอกคำนำหน้า ชื่อ นามสกุล เป็นภาษาไทย";
+  if(!d.dob)e.dob="เลือกวันเกิด";
+  if(!/^\d{13}$/.test(d.idno))e.idno="ต้องเป็นตัวเลข 13 หลัก";
+  const h=parseFloat(d.height);if(!(h>=0.4&&h<=2.6)||!/^\d(\.\d{1,2})?$/.test(d.height))e.height="ใส่เป็นเมตร เช่น 1.65";
+  if(!d.birth)e.birth="ระบุจังหวัด";
+  if(!d.issue)e.issue="เลือกวันที่ออก";
+  if(!d.expiry)e.expiry="เลือกวันหมดอายุ";
+  if(d.issue&&d.expiry&&$("expiry").value<=$("issue").value)e.expiry="ต้องหลังวันที่ออก";
+  if(d.dob&&d.issue&&$("dob").value>=$("issue").value)e.dob="ต้องก่อนวันที่ออกหนังสือเดินทาง";
+  return e;
+}
+function showErrors(e,all){["country","ccode","pno","surname","title","given","thname","nat","dob","idno","gender","height","birth","issue","expiry"].forEach(k=>{const m=e[k]||"";const touched=all||$(k).dataset.touched;$("e-"+k).textContent=touched?m:"";$(k).classList.toggle("bad",!!(touched&&m))})}
+
+function textOut(d,m){
+  return [
+`ประเทศหนังสือเดินทาง: ${d.country}`,
+`ประเภทหนังสือเดินทาง: ${d.ptype}`,
+`Country Code: ${d.ccode.toUpperCase()}`,
+`Passport Number: ${d.pno.toUpperCase()}`,
+`Surname: ${d.surname}`,
+`Title / Name: ${(d.title+" "+d.given).trim()}`,
+`คำนำหน้า ชื่อ นามสกุล (ภาษาไทย): ${d.thname}`,
+`Nationality / สัญชาติ: ${d.nat}`,
+`DOB / วันเดือนปี เกิด: ${fmtEN(d.dob)}`,
+`ID No. / เลขบัตรประจำตัวประชาชน: ${d.idno}`,
+`Gender / เพศ: ${GENDER_TH[d.gender]||""}`,
+`Height / ส่วนสูง (เมตร): ${d.height}`,
+`Birthplace / จังหวัดที่เกิด: ${d.birth}`,
+`Date of Issue / วันที่ออกหนังสือเดินทาง: ${fmtTH(d.issue)}`,
+`Issuing Authority: ${d.auth}`,
+`Date of Expiry / วันที่หมดอายุ: ${fmtTH(d.expiry)}`,
+``,
+m.l1,
+m.l2].join("\n");
+}
+
+/* ---------- canvas rendering (fixed document palette) ---------- */
+const W=1250,H=880,cv=document.createElement("canvas");cv.width=W;cv.height=H;
+const ctx=cv.getContext("2d");
+let photoImg=null;
+const logoImg=new Image();logoImg.onload=()=>render(false);logoImg.src=document.querySelector(".logo").src;
+const F={disp:'"Bai Jamjuree","IBM Plex Sans Thai",sans-serif',body:'"IBM Plex Sans Thai",sans-serif',mono:'"IBM Plex Mono",monospace'};
+function fitText(t,x,y,maxW,size,weight,family,color){let s=size;ctx.font=`${weight} ${s}px ${family}`;while(ctx.measureText(t).width>maxW&&s>10){s-=1;ctx.font=`${weight} ${s}px ${family}`}ctx.fillStyle=color;ctx.fillText(t,x,y)}
+function field(label,value,x,y,maxW,opts={}){
+  ctx.textBaseline="alphabetic";
+  fitText(label,x,y,maxW,15,500,F.body,"#4d5f70");
+  fitText(value||"—",x,y+32,maxW,opts.size||25,opts.weight||600,opts.family||F.body,opts.color||"#101820");
+}
+function draw(d,m){
+  // paper
+  const g=ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,"#eaf2ee");g.addColorStop(.5,"#f4f1e8");g.addColorStop(1,"#e5edf5");
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  // guilloche
+  ctx.lineWidth=1;
+  for(let k=0;k<26;k++){ctx.beginPath();ctx.strokeStyle=k%2?"rgba(29,78,122,.07)":"rgba(31,122,77,.07)";
+    for(let x=0;x<=W;x+=6){const y=60+k*24+Math.sin(x/58+k*.7)*18+Math.sin(x/23+k)*6;x?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke()}
+  ctx.beginPath();ctx.strokeStyle="rgba(29,78,122,.06)";for(let r=40;r<260;r+=14){ctx.moveTo(1010+r,330);ctx.arc(1010,330,r,0,Math.PI*2)}ctx.stroke();
+  // header
+  ctx.fillStyle="#1d4e7a";ctx.fillRect(0,0,W,96);
+  ctx.fillStyle="#ffffff";ctx.font=`700 34px ${F.disp}`;ctx.textBaseline="middle";ctx.fillText("หนังสือเดินทาง  PASSPORT",40,40);
+  ctx.font=`500 18px ${F.body}`;ctx.fillText(((d.country||"").toUpperCase()?((d.country||"").toUpperCase()+"  ·  "):"")+"TRAINING SPECIMEN",40,74);
+  const lh=72,lw=logoImg.complete&&logoImg.naturalWidth?lh*logoImg.naturalWidth/logoImg.naturalHeight:160,lx=W-40-lw-16;
+  ctx.fillStyle="#ffffff";ctx.beginPath();ctx.roundRect?ctx.roundRect(lx,12,lw+16,lh,8):ctx.rect(lx,12,lw+16,lh);ctx.fill();
+  if(logoImg.complete&&logoImg.naturalWidth)ctx.drawImage(logoImg,lx+8,16,lw,lh-8);
+  ctx.textAlign="right";ctx.font=`700 20px ${F.disp}`;ctx.fillStyle="#ffd5dc";ctx.fillText("NOT A TRAVEL DOCUMENT",lx-24,40);
+  ctx.font=`500 16px ${F.body}`;ctx.fillStyle="#dbe7f2";ctx.fillText("เอกสารจำลองเพื่อการฝึกอบรม · CADT",lx-24,72);ctx.textAlign="left";
+  // photo
+  const px=40,py=126,pw=290,ph=370;
+  ctx.fillStyle="#dfe6ec";ctx.fillRect(px,py,pw,ph);
+  if(photoImg){const r=Math.max(pw/photoImg.width,ph/photoImg.height),iw=photoImg.width*r,ih=photoImg.height*r;
+    ctx.save();ctx.beginPath();ctx.rect(px,py,pw,ph);ctx.clip();ctx.filter="grayscale(1) contrast(1.05)";ctx.drawImage(photoImg,px+(pw-iw)/2,py+(ph-ih)/2,iw,ih);ctx.restore();ctx.filter="none"}
+  else{ctx.fillStyle="#a9b6c2";ctx.beginPath();ctx.arc(px+pw/2,py+140,72,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.ellipse(px+pw/2,py+ph+30,135,150,0,Math.PI,0);ctx.fill();}
+  ctx.strokeStyle="#7d8c99";ctx.lineWidth=2;ctx.strokeRect(px,py,pw,ph);
+  ctx.font=`500 14px ${F.body}`;ctx.fillStyle="#4d5f70";ctx.fillText("รูปถ่ายจำลอง / Specimen photo",px,py+ph+24);
+  // fields
+  const X=370,C2=640,C3=930,R=[134,210,286,362,438,514];
+  field("ประเภท / Type",d.ptype,X,R[0],230);
+  field("รหัสประเทศ / Country Code",d.ccode.toUpperCase(),C2-60,R[0],250);
+  field("หนังสือเดินทางเลขที่ / Passport No.",d.pno.toUpperCase(),C3-60,R[0],340,{size:30,weight:700,color:"#a3112b",family:F.mono});
+  field("นามสกุล / Surname",d.surname.toUpperCase(),X,R[1],820,{size:28});
+  field("ชื่อ / Title Name",`${d.title.toUpperCase()} ${d.given.toUpperCase()}`.trim(),X,R[2],820,{size:28});
+  field("ชื่อภาษาไทย / Name in Thai",d.thname,X,R[3],820,{size:28});
+  field("สัญชาติ / Nationality",d.nat,X,R[4],250);
+  field("วันเกิด / Date of birth",fmtENs(d.dob),C2,R[4],270);
+  field("เลขประจำตัวประชาชน / ID No.",d.idno,C3,R[4],290,{family:F.mono});
+  field("เพศ / Sex",d.gender?`${GENDER_TH[d.gender]} / ${d.gender}`:"",X,R[5],250);
+  field("ส่วนสูง / Height (m)",d.height,C2,R[5],270);
+  field("สถานที่เกิด / Place of birth",d.birth,C3,R[5],290);
+  const R7=580;
+  field("วันออกหนังสือ / Date of issue",d.issue?`${fmtTH(d.issue)}  ${fmtENs(d.issue)}`:"",40,R7,370,{size:22});
+  field("วันหมดอายุ / Date of expiry",d.expiry?`${fmtTH(d.expiry)}  ${fmtENs(d.expiry)}`:"",430,R7,370,{size:22});
+  field("ออกโดย / Issuing authority",d.auth,820,R7,390,{size:17});
+  if(logoImg.complete&&logoImg.naturalWidth){ctx.save();ctx.globalAlpha=.07;const ww=520,wh=ww*logoImg.naturalHeight/logoImg.naturalWidth;ctx.drawImage(logoImg,W-ww-40,300-wh/2,ww,wh);ctx.restore()}
+  // watermark
+  ctx.save();ctx.translate(W/2+60,370);ctx.rotate(-0.3);ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillStyle="rgba(179,18,46,.15)";ctx.font=`700 170px ${F.disp}`;ctx.fillText("SPECIMEN",0,0);
+  ctx.font=`700 40px ${F.disp}`;ctx.fillText("TRAINING USE ONLY · CADT",0,110);ctx.restore();
+  // MRZ zone
+  ctx.fillStyle="#fbfaf5";ctx.fillRect(0,660,W,H-660);ctx.fillStyle="#c9d2da";ctx.fillRect(0,660,W,2);
+  ctx.fillStyle="#111";ctx.font=`500 40px ${F.mono}`;ctx.textAlign="center";ctx.textBaseline="alphabetic";
+  const step=(W-80)/44;
+  [m.l1,m.l2].forEach((l,li)=>{for(let i=0;i<44;i++)ctx.fillText(l[i],40+step*i+step/2,755+li*78)});
+  ctx.textAlign="left";
+  $("pp").src=cv.toDataURL("image/png");
+}
+
+let fontsReady=false;
+function render(final){
+  const d=read(),e=validate(d);showErrors(e,final);
+  const m=buildMRZ({...d,pno:d.pno||"",idno:d.idno||""});
+  $("mrz1").textContent=m.l1;$("mrz2").textContent=m.l2;
+  $("cd").innerHTML=`<span>เลขพาสปอร์ต (ตำแหน่ง 10)</span><b>${m.checks.doc}</b><span>วันเกิด (ตำแหน่ง 20)</span><b>${m.checks.dob}</b><span>วันหมดอายุ (ตำแหน่ง 28)</span><b>${m.checks.exp}</b><span>เลขบัตรประชาชน (ตำแหน่ง 43)</span><b>${m.checks.opt}</b><span>Composite (ตำแหน่ง 44)</span><b>${m.checks.comp}</b>`;
+  $("out").textContent=textOut(d,m);
+  const n=Object.keys(e).length,st=$("status");
+  if(n){st.hidden=false;st.className="status";st.textContent=`ยังมีข้อมูลที่ต้องแก้ไข ${n} รายการ (ดูข้อความสีแดงในฟอร์ม)`}
+  else{st.hidden=false;st.className="status ok";st.textContent="ข้อมูลครบถ้วน MRZ ถูกต้องตามรูปแบบ 44 ตัวอักษร"}
+  draw(d,m);
+  return n===0;
+}
+
+ids.forEach(k=>{const el=$(k);el.addEventListener("input",()=>{el.dataset.touched=1;
+  if(k==="pno"||k==="ccode"){const p=el.selectionStart;el.value=el.value.toUpperCase();try{el.setSelectionRange(p,p)}catch(_){}}
+  if(k==="idno")el.value=el.value.replace(/\D/g,"");
+  if(k==="expiry")el.dataset.manual=1;
+  if(k==="issue"&&!$("expiry").dataset.manual){const p=parseDate(el.value);if(p){const dt=new Date(Date.UTC(p.y+10,p.m-1,p.d));dt.setUTCDate(dt.getUTCDate()-1);$("expiry").value=dt.toISOString().slice(0,10)}}
+  render(false)});el.addEventListener("change",()=>render(false))});
+$("photo").addEventListener("change",ev=>{const f=ev.target.files[0];if(!f){photoImg=null;render(false);return}
+  const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{photoImg=im;render(false)};im.src=r.result};r.readAsDataURL(f)});
+$("frm").addEventListener("submit",ev=>{ev.preventDefault();const ok=render(true);
+  if(ok)$("preview").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+  else{const b=document.querySelector("input.bad");b&&b.focus()}});
+$("clear").addEventListener("click",()=>{["country","ccode","pno","surname","given","thname","nat","dob","idno","height","birth","issue","expiry"].forEach(k=>{$(k).value="";delete $(k).dataset.touched});
+  $("title").value="";$("gender").value="";delete $("expiry").dataset.manual;$("photo").value="";photoImg=null;render(false)});
+$("copy").addEventListener("click",()=>{const t=$("out").textContent;
+  navigator.clipboard.writeText(t).then(()=>{$("copied").textContent="คัดลอกแล้ว"},()=>{const s=getSelection(),r=document.createRange();r.selectNodeContents($("out"));s.removeAllRanges();s.addRange(r);$("copied").textContent="เลือกข้อความแล้ว กด Ctrl+C / ⌘C เพื่อคัดลอก"})});
+
+let downloads=null;
+$("dl").addEventListener("click",()=>{if(!downloads)return;
+  if(!render(true)){$("dlhint").textContent="แก้ไขข้อมูลให้ครบก่อนบันทึก";return}
+  cv.toBlob(b=>{downloads.save({filename:`passport-specimen-${$("pno").value||"cadt"}.png`,data:b})
+    .then(()=>{$("dlhint").textContent="บันทึกแล้ว"})
+    .catch(err=>{if(err&&err.code==="declined")$("dlhint").textContent="ยกเลิกการบันทึก";else if(err&&err.code==="rate_limited")$("dlhint").textContent="รอสักครู่แล้วลองอีกครั้ง";else{$("dl").hidden=true;$("dlhint").textContent="คลิกขวาหรือกดค้างที่รูปเพื่อบันทึกภาพ"}})},"image/png")});
+
+render(false);
+Promise.all([document.fonts.load(`700 34px "Bai Jamjuree"`),document.fonts.load(`500 25px "IBM Plex Sans Thai"`),document.fonts.load(`600 25px "IBM Plex Sans Thai"`),document.fonts.load(`500 40px "IBM Plex Mono"`)]).catch(()=>{}).then(()=>render(false));
+setTimeout(()=>render(false),1500);
+(async()=>{try{downloads=await window.claude?.use?.("downloads")}catch(_){downloads=null}
+  if(downloads){$("dl").hidden=false;$("dlhint").textContent="หรือคลิกขวา/กดค้างที่รูปเพื่อบันทึก"}})();
+</script>
+
+</body>
+</html>
